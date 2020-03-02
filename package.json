@@ -1,0 +1,25 @@
+{
+  "name": "react",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "4.9.4",
+    "@material-ui/icons": "^4.9.1",
+    "@pxblue/colors": "2.0.0",
+    "@pxblue/react-components": "2.1.0",
+    "@pxblue/themes": "3.0.2",
+    "@types/react": "16.9.24",
+    "react": "16.13.0",
+    "react-dom": "16.13.0",
+    "typeface-open-sans": "0.0.75"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "react-scripts": "latest"
+  }
+}
