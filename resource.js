@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles, fade } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -41,11 +41,12 @@ import List from "@material-ui/core/List";
 import SettingsIcon from "@material-ui/icons/Settings";
 import clsx from "clsx";
 import CssBaseline from "@material-ui/core/CssBaseline";
-
+import SearchIcon from "@material-ui/icons/Search";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import Divider from "@material-ui/core/Divider";
+import InputBase from "@material-ui/core/InputBase";
 
 const preventDefault = event => event.preventDefault();
 const options = ["Delete"];
@@ -149,6 +150,43 @@ export default function StickyHeadTable() {
     content: {
       flexGrow: 1,
       padding: theme.spacing(3)
+    },
+    search: {
+      position: "relative",
+      borderRadius: theme.shape.borderRadius,
+      backgroundColor: fade(theme.palette.common.white, 0.15),
+      "&:hover": {
+        backgroundColor: fade(theme.palette.common.white, 0.25)
+      },
+      marginLeft: 0,
+      width: "100%",
+      [theme.breakpoints.up("sm")]: {
+        marginLeft: theme.spacing(1),
+        width: "auto"
+      }
+    },
+    searchIcon: {
+      width: theme.spacing(7),
+      height: "100%",
+      position: "absolute",
+      pointerEvents: "none",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    },
+    inputRoot: {
+      color: "inherit"
+    },
+    inputInput: {
+      padding: theme.spacing(1, 1, 1, 7),
+      transition: theme.transitions.create("width"),
+      width: "100%",
+      [theme.breakpoints.up("sm")]: {
+        width: 120,
+        "&:focus": {
+          width: 200
+        }
+      }
     }
   }));
 
@@ -165,6 +203,22 @@ export default function StickyHeadTable() {
   const [openSnackBar, setSnackBar] = React.useState(false);
 
   const [openDrawer, setOpenDrawer] = React.useState(false);
+
+  const [inputvalue, setSearchValue] = React.useState("");
+  const handleSearchChange = event => {
+    let tempList = rows;
+    if (event.target.value) {
+      let newList = tempList.filter(item => {
+        const lc = item.repository.name.toLowerCase();
+        const filter = event.target.value.toLowerCase();
+        return lc.includes(filter);
+      });
+      setRows(newList);
+    } else {
+      setRows(tempList);
+    }
+    setSearchValue(event.target.value);
+  };
 
   const handleDrawerOpen = () => {
     setOpenDrawer(true);
@@ -256,7 +310,22 @@ export default function StickyHeadTable() {
             <Typography ariant="h6" noWrap>
                 Resources                 
             </Typography>
-                        
+                        {" "}
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Repository.."
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput
+                }}
+                inputProps={{ "aria-label": "search" }}
+                onChange={handleSearchChange}
+                value={inputvalue}
+              />
+            </div>
           </Toolbar>
                       
         </AppBar>
@@ -325,15 +394,13 @@ export default function StickyHeadTable() {
                         {column.id === "issues" ? (
                           <Tooltip title="Add Resource">
                             <IconButton
-                             className={classes.spacing}
+                              className={classes.spacing}
                               data-cy="toolbar-add"
                               color="inherit"
                               aria-label="add"
                               onClick={handleOpen}
                             >
-                              <AddCircleIcon
-                                color="secondary"
-                              />
+                              <AddCircleIcon color="secondary" />
                             </IconButton>
                           </Tooltip>
                         ) : null}
