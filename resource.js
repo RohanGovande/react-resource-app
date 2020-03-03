@@ -215,7 +215,7 @@ export default function StickyHeadTable() {
       });
       setRows(newList);
     } else {
-      setRows(tempList);
+      setRows(data);
     }
     setSearchValue(event.target.value);
   };
@@ -258,7 +258,6 @@ export default function StickyHeadTable() {
     if (value) {
       let templist = rows;
       templist.push(JSON.parse(value));
-      console.log("templist", [...templist]);
       setRows([...templist]);
       setOpen(false);
       setSnackBar(true);
@@ -421,7 +420,6 @@ export default function StickyHeadTable() {
                         >
                           {columns.map(column => {
                             const value = row[column.id];
-                            console.log(value);
                             return (
                               <TableCell
                                 key={row[column.id] + "_" + value.name}
