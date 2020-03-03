@@ -16,6 +16,7 @@ import Container from "@material-ui/core/Container";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
+import Icon from "@material-ui/core/Icon"
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import Link from "@material-ui/core/Link";
@@ -33,7 +34,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import Drawer from "@material-ui/core/Drawer";
+import { Drawer, DrawerHeader, DrawerSubheader, DrawerBody, DrawerFooter } from '@pxblue/react-components';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -121,7 +122,7 @@ export default function StickyHeadTable() {
       width: 240,
       flexShrink: 0,
       whiteSpace: "nowrap"
-    },
+      },
     drawerOpen: {
       width: 240,
       transition: theme.transitions.create("width", {
@@ -187,7 +188,7 @@ export default function StickyHeadTable() {
           width: 200
         }
       }
-    }
+    },
   }));
 
   const classes = useStyles();
@@ -330,6 +331,7 @@ export default function StickyHeadTable() {
         </AppBar>
         <Drawer
           variant="permanent"
+          open = {openDrawer}
           className={clsx(classes.drawer, {
             [classes.drawerOpen]: openDrawer,
             [classes.drawerClose]: !openDrawer
@@ -341,21 +343,19 @@ export default function StickyHeadTable() {
             })
           }}
         >
-          <div className={classes.toolbar}>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "rtl" ? (
+          <DrawerHeader icon={theme.direction === "rtl" ? (
                 <ChevronRightIcon />
               ) : (
                 <ChevronLeftIcon />
-              )}
-            </IconButton>
-          </div>
+              )} onIconClick={handleDrawerClose} >
+          </DrawerHeader>
           <Divider />{" "}
+          <DrawerBody>
           <List>
             {["Home", "Design Patterns", "Style Guides", "Resources"].map(
               (text, index) => (
                 <ListItem button key={text}>
-                  <ListItemIcon>
+                  <ListItemIcon >
                     {index % 2 === 0 ? <SettingsIcon /> : <CheckCircleIcon />}
                   </ListItemIcon>
                   <ListItemText primary={text} />
@@ -363,6 +363,7 @@ export default function StickyHeadTable() {
               )
             )}
           </List>
+          </DrawerBody>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
